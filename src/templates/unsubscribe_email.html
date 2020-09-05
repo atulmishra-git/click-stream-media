@@ -1,0 +1,15 @@
+<h1>Unsubscribe from My Mail Merge</h1>
+
+
+<p>{{ message }}</p>
+
+<form method="post">
+  {% csrf_token %}
+  <div style="margin: 10px;">
+      <input type="email" name="email" placeholder="Email Address" style="height:30px; width: 250px;">
+  </div>
+
+ <div style="margin: 10px;">
+  <button type="submit" name="button">Submit</button>
+ </div>
+</form>
