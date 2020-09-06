@@ -49,19 +49,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Campaign(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    campaign_uid = models.CharField(max_length=255)
+    sheet_id = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
-        return self.campaign_uid
+        return self.sheet_id
 
 
 class TrackingImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.CharField(max_length=255)
-    uuid = models.CharField(max_length=255)
-    subject = models.CharField(max_length=255)
     action = models.CharField(max_length=255)
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, null=True)
     rowIdx = models.CharField(max_length=255)
 
     def __str__(self):
@@ -69,10 +67,9 @@ class TrackingImage(models.Model):
 
 
 class UnsubscribeEmail(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, null=True, related_name='unsubscribed')
     email = models.CharField(max_length=255)
-    date_recorded = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.email

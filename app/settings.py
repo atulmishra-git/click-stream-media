@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,11 @@ SECRET_KEY = 'q&u&05yzhz2*_x1^jk1bo76vi9tqxo44stpl7xrs!9cg$4#rk+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "43.225.54.162",
+    "localhost",
+    "127.0.0.1"
+]
 
 
 # Application definition
@@ -37,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'src.apps.SrcConfig'
+    'src.apps.SrcConfig',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -63,6 +69,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -122,3 +130,19 @@ STATIC_URL = '/static/'
 
 
 AUTH_USER_MODEL = 'src.User'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+AUTHENTICATION_BACKENDS  = [
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2'
+]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login'
+
+TACKER_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxDdZd0634KfeYyhq69c_C5yxnjceOrRp6UMxqokZsNlHRCHQ/exec'
