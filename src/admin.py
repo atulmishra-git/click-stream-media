@@ -4,14 +4,6 @@ from src.models import TrackingImage, UnsubscribeEmail, User, Campaign
 # Register your models here.
 
 
-@admin.register(TrackingImage)
-class TrackingImageAdmin(admin.ModelAdmin):
-
-    def has_add_permission(self, request):
-        return False
-
-
-
 @admin.register(UnsubscribeEmail)
 class UnsubscribeEmailAdmin(admin.ModelAdmin):
     list_display = ('email', 'date', )
@@ -24,4 +16,4 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Campaign)
 class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('user', 'sheet_id', )
+    list_display = ('user', 'sheet_id', 'email_open', 'date', )

@@ -50,16 +50,24 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Campaign(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sheet_id = models.CharField(max_length=255, unique=True)
+    date = models.DateField(auto_now_add=True, null=True)
+
+    def email_open(self):
+        opened = Campaign.objects.filter(sheet_id=self.sheet_id).first()
+        return opened.tracker.count()
 
     def __str__(self):
         return self.sheet_id
+
+    class Meta:
+        ordering = ['-date']
 
 
 class TrackingImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email = models.CharField(max_length=255)
     action = models.CharField(max_length=255)
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, null=True)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, null=True, related_name='tracker')
     rowIdx = models.CharField(max_length=255)
 
     def __str__(self):

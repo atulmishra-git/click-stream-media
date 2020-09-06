@@ -29,7 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "43.225.54.162",
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "mymailmerge.com"
 ]
 
 
@@ -145,4 +146,4 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
 
-TACKER_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxDdZd0634KfeYyhq69c_C5yxnjceOrRp6UMxqokZsNlHRCHQ/exec'
+TACKER_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzfDsXH2ZylMs2YXpIm60CcJyxG6MNqSzw_3k-CIA/dev'

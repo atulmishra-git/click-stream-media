@@ -36,7 +36,6 @@ class EmailTackerOpen(View):
 
         tracker = TrackingImage.objects.create(user=user, email=email, action=action, campaign=campaign, rowIdx=rowIdx)
         tracker.save()
-        requests.get(settings.TACKER_WEBHOOK_URL + "sheet_id=" + kwargs['sheet_id'] + "rowIdx=" + kwargs['rowIdx'])
         return response
 
     def post(self, request, *args, **kwargs):
@@ -65,7 +64,22 @@ class CampaignView(View):
         return JsonResponse({'saved': saved})
 
     def get(self, request, *args, **kwargs):
-        return render(request)
+        user = User.objects.get(email=request.GET['user'])
+        campaign = Campaign.objects.filter(sheet_id=request.GET['sheet_id'], user=user).all()
+        results = []
+        for c in campaign:
+            tracker = c.tracker
+            rowIdx = tracker.all()
+            un_rowIdx = []
+            for r in rowIdx:
+                if r.rowIdx not in un_rowIdx:
+                    un_rowIdx.append(r.rowIdx)
+
+            results.append({
+                'email_open': tracker.count(),
+                'un_rowIdx': un_rowIdx
+            })
+        return JsonResponse({'results': results})
 
 
 class UnsubscribeView(CreateView):
