@@ -12,12 +12,22 @@
       <h1 class="mt-5">Unsubscribe from My Mail Merge</h1>
       <hr>
 
+      {% if messages %}
+        <div class="alert alert-success">
+          <h6>Unsubscription was successful</h6>
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+      {% endif %}
+
       <form method="post">
         {% csrf_token %}
         <div class="form-group">
           <label for="">{{form.email.label}}</label>
           {{form.email}}
         </div>
+        {{form.campaign}}
         <button type="submit" name="button" class="btn btn-danger">Submit</button>
       </form>
     </div>

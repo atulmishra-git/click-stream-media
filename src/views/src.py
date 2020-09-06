@@ -10,7 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from src.forms import UnsubscribeForm
 
 from django.conf import settings
-import requests
+from django.urls import reverse_lazy
+from django.contrib import messages
 
 # Create your views here.
 
@@ -74,10 +75,11 @@ class CampaignView(View):
             for r in rowIdx:
                 if r.rowIdx not in un_rowIdx:
                     un_rowIdx.append(r.rowIdx)
-
+            unsubscribed = c.unsubscribed.all()
             results.append({
                 'email_open': tracker.count(),
-                'un_rowIdx': un_rowIdx
+                'un_rowIdx': un_rowIdx,
+                'unsubscribed': [un.email for un in unsubscribed]
             })
         return JsonResponse({'results': results})
 
@@ -86,7 +88,17 @@ class UnsubscribeView(CreateView):
     template_name = 'src/unsubscribe.html'
     form_class = UnsubscribeForm
 
+    def get_success_url(self):
+        messages.add_message(self.request, messages.INFO, 'We have informed the sender of this email that you dont want to receive more emails from them.')
+        return reverse_lazy('unsubscribe', kwargs={'campaign_id': self.kwargs['campaign_id']})
+
+
     def get(self, request, *args, **kwargs):
         campaign = Campaign.objects.get(sheet_id=kwargs['campaign_id'])
         form = self.form_class(initial={'campaign': campaign.id})
         return render(request, self.template_name, {'form': form})
+
+
+# class UnsubscribeListView(View):
+#     def get(self, request, ):
+#         return
