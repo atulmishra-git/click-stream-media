@@ -138,7 +138,7 @@ class QuotaConsumedView(View):
 
         qc = QuotaConsumed.objects.filter(user=user, date=date).first()
         if qc:
-            qc.amount +=used
+            qc.amount += round(float(used))
         else:
             QuotaConsumed.objects.create(user=user, amount=round(float(used)), date=date)
 
