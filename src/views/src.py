@@ -140,7 +140,7 @@ class QuotaConsumedView(View):
         if qc:
             qc.amount +=used
         else:
-            QuotaConsumed.objects.create(user=user, amount=used, date=date)
+            QuotaConsumed.objects.create(user=user, amount=int(used), date=date)
 
         return JsonResponse({'results': {'used': used}})
 
