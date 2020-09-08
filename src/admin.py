@@ -1,5 +1,5 @@
 from django.contrib import admin
-from src.models import TrackingImage, UnsubscribeEmail, User, Campaign, Plans, PurchasedPlans
+from src.models import TrackingImage, UnsubscribeEmail, User, Campaign, Plans, PurchasedPlans, QuotaConsumed
 
 # Register your models here.
 
@@ -27,3 +27,8 @@ class PlansAdmin(admin.ModelAdmin):
 @admin.register(PurchasedPlans)
 class PurchasedPlansAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(QuotaConsumed)
+class QuotaConsumedAdmin(admin.ModelAdmin):
+    list_display = ('user', 'amount', 'date')
