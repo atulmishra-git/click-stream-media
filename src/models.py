@@ -3,6 +3,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import AbstractBaseUser
 
 from django.contrib.auth.base_user import BaseUserManager
+from django.utils import timezone
 
 # Create your models here.
 
@@ -81,3 +82,42 @@ class UnsubscribeEmail(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class Plans(models.Model):
+    PLAN_TYPE = (
+        ('Free', 'Free'),
+        ('Paid', 'Paid')
+    )
+    name = models.CharField(max_length=120)
+    cost = models.CharField(max_length=20, help_text='Cost of Plan in USD', null=True)
+    type = models.CharField(choices=PLAN_TYPE, default='Free', max_length=10)
+    description = models.TextField(null=True)
+    quota = models.CharField(max_length=120, help_text='Quota per 24 hrs', default=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = ('Plans')
+
+
+class PurchasedPlans(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_plan')
+    plan = models.ForeignKey(Plans, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.plan.name
+
+    class Meta:
+        verbose_name_plural = ('Purchased Plans')
+
+
+class QuotaConsumed(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userquota_consumed')
+    amount = models.IntegerField(default=0)
+    date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.amount

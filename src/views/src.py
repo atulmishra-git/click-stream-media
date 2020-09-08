@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 import base64
-from src.models import TrackingImage, UnsubscribeEmail, User, Campaign
+from src.models import TrackingImage, UnsubscribeEmail, User, Campaign, Plans, PurchasedPlans, QuotaConsumed
 from django.views.generic import View, CreateView
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
@@ -12,6 +12,7 @@ from src.forms import UnsubscribeForm
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib import messages
+from datetime import datetime
 
 # Create your views here.
 
@@ -99,6 +100,72 @@ class UnsubscribeView(CreateView):
         return render(request, self.template_name, {'form': form})
 
 
-# class UnsubscribeListView(View):
-#     def get(self, request, ):
-#         return
+class MyUnsubscribeView(CreateView):
+    template_name = 'src/my-unsubscribe.html'
+    form_class = UnsubscribeForm
+
+    def get_success_url(self):
+        messages.add_message(self.request, messages.INFO, 'Email added succesfully.')
+        return reverse_lazy('my_unsubscribe', kwargs={'sheet_id': self.kwargs['sheet_id']})
+
+    def get(self, request, *args, **kwargs):
+        campaign = Campaign.objects.get(sheet_id=kwargs['sheet_id'])
+        form = self.form_class(initial={'campaign': campaign.id})
+        return render(request, self.template_name, {'form': form})
+
+
+class UserPlansView(View):
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(email=self.kwargs['user'])
+        try:
+            pp = PurchasedPlans.objects.get(user=user)
+            results = dict(name=pp.plan.name, quota=pp.plan.quota, id=pp.plan.pk)
+            return JsonResponse({'results': results})
+        except PurchasedPlans.DoesNotExist:
+            plan = Plans.objects.get(type='Free')
+            results = dict(name=plan.name, quota=plan.quota, id=plan.pk)
+            return JsonResponse({'results': results})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class QuotaConsumedView(View):
+    def post(self, request, *args, **kwargs):
+        _user = request.POST['user']
+        used = request.POST['used']
+        date = datetime.strptime(request.POST['date'], "%d/%m/%Y")
+
+        user = User.objects.get(email=_user)
+
+        qc = QuotaConsumed.object.filter(user=user, date=date).first()
+        if qc:
+            qc.amount +=used
+        else:
+            QuotaConsumed.objects.create(user=user, amount=used, date=date)
+
+        return JsonResponse({'results': {'used': used}})
+
+
+    def get(self, request, *args, **kwargs):
+        _user = request.GET['user']
+        date = datetime.strptime(request.GET['date'], "%d/%m/%Y")
+
+        user = User.objects.get(email=_user)
+        qc = QuotaConsumed.objects.filter(user=user, date=date).first()
+        if qc is not None:
+            results = dict(amount=qc.amount)
+        else:
+            results = dict(amount=0)
+        return JsonResponse({'results': results})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class UserCreateView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            email = request.POST['email']
+            user = User.objects.create(email=email, password="user123")
+            user.save()
+            message = 'success'
+        except Exception:
+            message = 'Failed'
+        return JsonResponse({'results': message})
