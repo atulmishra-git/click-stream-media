@@ -136,7 +136,7 @@ class QuotaConsumedView(View):
 
         user = User.objects.get(email=_user)
 
-        qc = QuotaConsumed.object.filter(user=user, date=date).first()
+        qc = QuotaConsumed.objects.filter(user=user, date=date).first()
         if qc:
             qc.amount +=used
         else:
