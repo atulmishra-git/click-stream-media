@@ -139,8 +139,10 @@ class QuotaConsumedView(View):
         qc = QuotaConsumed.objects.filter(user=user, date=date).first()
         if qc:
             qc.amount += round(float(used))
+            qc.save()
         else:
-            QuotaConsumed.objects.create(user=user, amount=round(float(used)), date=date)
+            qc = QuotaConsumed.objects.create(user=user, amount=round(float(used)), date=date)
+            qc.save()
 
         return JsonResponse({'results': {'used': used}})
 
