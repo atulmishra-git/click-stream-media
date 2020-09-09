@@ -165,9 +165,14 @@ class UserCreateView(View):
     def post(self, request, *args, **kwargs):
         try:
             email = request.POST['email']
-            user = User.objects.create(email=email, password="user123")
+            user = User.objects.create(email=email)
             user.save()
             message = 'success'
-        except Exception:
+        except Exception as e:
             message = 'Failed'
         return JsonResponse({'results': message})
+
+
+class PurchasePlan(View):
+    def get(self, request, *args, **kwargs):
+        return
