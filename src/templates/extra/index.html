@@ -1,8 +1,30 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block content %}
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <h1 class="display-4">My Mail Merge</h1>
-  <p class="lead">.</p>
+<div class="container">
+  <div class="row">
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4"><img src="{% static 'images/mmm_Final.png' %}" /></h1>
+      <p class="lead">The Easiest Way to Create Email Campaigns</p>
+      <p>Mail merges don't have to be complicated. Send your own personalized, trackable email campaigns from your Gmail account.</p>
+      <a class="btn btn-lg btn-danger m-5">Try MMM for free</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row mb-5">
+    <div class="col-10 mx-auto text-center">
+      <h2>Our users send over 1.5 million emails every day</h2>
+      <p>Create and track your very own personalized email campaign in three simple steps. No coding required.</p>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div class="col-2 mx-auto text-center">
+      <a class="btn btn-danger">Install MMM</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

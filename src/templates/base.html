@@ -6,34 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>My Mail Merge</title>
     <link rel="stylesheet" href="{% static '/css/bootstrap/dist/css/bootstrap.min.css' %}">
+    <style>
+     .bg-red{
+       background-color: #C80C0C !important;
+     }
+     .btn-outline-danger {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+     }
+    </style>
   </head>
   <body>
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-      <h5 class="my-0 mr-md-auto font-weight-normal">My Mail Merge</h5>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-red border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal"></h5>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'plans' %}">Plans</a>
-        <a class="p-2 text-dark" href="#">Support</a>
+        <a class="p-2 text-white" href="{% url 'plans' %}">Plans</a>
       </nav>
-      <a class="btn btn-outline-primary" href="#">Sign in</a>
+      <a class="btn btn-outline-danger" href="#">Sign in</a>
     </div>
 
    {% block content %}
    {% endblock %}
 
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
-      <div class="row">
-        <div class="col-12 col-md">
-          <small class="d-block mb-3 text-muted">&copy; 2020-2021</small>
-        </div>
-        <div class="col-6 col-md">
-          <h5>About</h5>
-          <ul class="list-unstyled text-small">
-            <li><a class="text-muted" href="#">Privacy</a></li>
-            <li><a class="text-muted" href="#">Terms</a></li>
-          </ul>
-        </div>
-      </div>
-    </footer>
+   <footer class="pt-3 my-md-4 pt-md-4 border-top">
+     <div class="container">
+       <div class="row">
+         <div class="col-2 col-md text-left">
+           <small class="text-muted">&copy; 2020-2021</small>
+         </div>
+         <div class="col-10 col-md text-right">
+           <ul class="text-small list-inline">
+             <li class="list-inline-item"><a class="text-muted" href="#">Privacy</a></li>
+             <li class="list-inline-item"><a class="text-muted" href="#">Terms of use</a></li>
+           </ul>
+         </div>
+       </div>
+     </div>
+   </footer>
 
    <script src="{% static 'css/bootstrap/dist/js/bootstrap.min.js' %}"></script>
   </body>
