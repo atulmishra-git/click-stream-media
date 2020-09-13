@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <h1 class="mb-5 mt-4">About</h1>
+
+  <div class="row">
+    <div class="col-sm">
+      {% autoescape off %}
+      {{obj.content}}
+      {% endautoescape %}
+    </div>
+  </div>
+</div>
+{% endblock %}

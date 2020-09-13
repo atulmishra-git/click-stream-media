@@ -1,7 +1,7 @@
 from django.urls import path
 from .views.src import EmailTackerOpen, UnsubscribeView, CampaignView, MyUnsubscribeView, UserPlansView, QuotaConsumedView, UserCreateView
 
-from .views.extra import IndexView, LoginView, PlansView
+from .views.extra import IndexView, LoginView, PlansView, PrivacyView, TermsOfUseView, AboutView
 
 
 urlpatterns = [
@@ -18,5 +18,8 @@ urlpatterns = [
 urlpatterns += [
     path('', IndexView.as_view(), name='index'),
     path('login/', LoginView.as_view(), name='login'),
-    path('plans/', PlansView.as_view(), name='plans')
+    path('plans/', PlansView.as_view(), name='plans'),
+    path('privacy/', PrivacyView.as_view(), name='privacy'),
+    path('terms/', TermsOfUseView.as_view(), name='terms'),
+    path('about/', AboutView.as_view(), name='about')
 ]

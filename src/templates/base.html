@@ -37,8 +37,10 @@
          </div>
          <div class="col-10 col-md text-right">
            <ul class="text-small list-inline">
-             <li class="list-inline-item"><a class="text-muted" href="#">Privacy</a></li>
-             <li class="list-inline-item"><a class="text-muted" href="#">Terms of use</a></li>
+             <li class="list-inline-item"><a class="text-muted" href="{% url 'index' %}">Home</a></li>
+             <li class="list-inline-item"><a class="text-muted" href="{% url 'about' %}">About</a></li>
+             <li class="list-inline-item"><a class="text-muted" href="{% url 'privacy' %}">Privacy</a></li>
+             <li class="list-inline-item"><a class="text-muted" href="{% url 'terms' %}">Terms of use</a></li>
            </ul>
          </div>
        </div>

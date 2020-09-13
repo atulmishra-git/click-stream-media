@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser
 
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils import timezone
-
+from tinymce.models import HTMLField
 # Create your models here.
 
 
@@ -118,3 +118,16 @@ class QuotaConsumed(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userquota_consumed')
     amount = models.IntegerField(default=0)
     date = models.DateField(default=timezone.now)
+
+
+class CmsPage(models.Model):
+    PAGES = (
+        ('terms', 'Terms Of Use'),
+        ('privacy', 'Privacy'),
+        ('about', 'About us')
+    )
+    page_name = models.CharField(max_length=32, choices=PAGES)
+    content = HTMLField(verbose_name='Page Content', null=True)
+
+    def __str__(self):
+        return self.page_name

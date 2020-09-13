@@ -1,0 +1,2 @@
+DATABASE_URL_PROD=mysql://django:django@127.0.0.1:3306/django
+DATABASE_URL_LOC=sqlite:///C:/Users/Atul/Documents/click-stream-media/db.sqlite3

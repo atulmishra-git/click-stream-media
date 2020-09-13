@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'src.apps.SrcConfig',
-    'social_django'
+    'social_django',
+    'tinymce'
 ]
 
 MIDDLEWARE = [
@@ -83,12 +85,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL')) }
 
 
 # Password validation
@@ -136,6 +133,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 AUTHENTICATION_BACKENDS  = [
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.google.GoogleOAuth2'
@@ -146,4 +145,16 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
 
-TACKER_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzfDsXH2ZylMs2YXpIm60CcJyxG6MNqSzw_3k-CIA/dev'
+
+TINYMCE_JS_ROOT = os.path.join(os.path.join(BASE_DIR, "static"), "tiny_mce")
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce.js")
+TINYMCE_SPELLCHECKER = False
+TINYMCE_COMPRESSOR = False
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 10,
+    'width': '100%',
+    'height': '550px'
+}
