@@ -40,15 +40,6 @@ class EmailTackerOpen(View):
         tracker.save()
         return response
 
-    def post(self, request, *args, **kwargs):
-        campaign = Campaign.objects.get(sheet_id=request.POST['sheet_id'])
-        user = User.objects.get(email=request.POST['user'])
-        action = request.POST['action']
-
-        tracker = TrackingImage.objects.filter(user=user, action=action, campaign=campaign)
-        result = [{img.rowIdx:img.email} for img in tracker]
-
-        return JsonResponse({'result': result})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -67,7 +58,7 @@ class CampaignView(View):
 
     def get(self, request, *args, **kwargs):
         user = User.objects.get(email=request.GET['user'])
-        campaign = Campaign.objects.filter(sheet_id=request.GET['sheet_id'], user=user).all()
+        campaign = Campaign.objects.filter(sheet_id=request.GET['sheet_id'], user=user).order_by('-id').all()
         results = []
         for c in campaign:
             tracker = c.tracker
