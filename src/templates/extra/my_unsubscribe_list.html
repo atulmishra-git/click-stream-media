@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="container mb-5">
+   <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Unsubscriptions</li>
+      </ol>
+   </nav>
+ </div>
+  <div class="container">
+    <form class="form-inline mb-2" method="get" action="{% url 'my_unsubscribe' 0 %}" onsubmit="this.action = this.action.replace('/0', '/'+this.elements[0].value); return true;">
+      <div class="form-group">
+        <select class="form-control" name="sheet_id">
+          <option value="">--Select Sheet Id--</option>
+          {% for sheet_id in sheets %}
+            <option>{{sheet_id.sheet_id}}</option>
+          {% endfor %}
+        </select>
+      </div>&nbsp;
+      <button type="submit" name="button" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;Add</button>
+    </form>
+
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+            <th>S.no</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th></th>
+          </thead>
+          <tbody>
+            {% for object in object_list %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{object.email}}</td>
+                <td>{{object.date}}</td>
+                <td>
+                  <a href="{% url 'my_unsubscribe_delete' object.id %}"><i class="fa fa-trash"></i></a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

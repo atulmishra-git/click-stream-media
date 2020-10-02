@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <div class="container mb-5">
+   <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Campaigns</li>
+      </ol>
+   </nav>
+ </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead>
+            <th>S.no</th>
+            <th>Sheet Id</th>
+            <th>Opened</th>
+            <th>Date</th>
+          </thead>
+          <tbody>
+            {% for object in object_list %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{object.sheet_id}}
+                  &nbsp;
+                  <a href="https://docs.google.com/spreadsheets/d/{{object.sheet_id}}/edit" target="_blank">
+                  <i class="fa fa-link"></i></a></td>
+                <td>{{object.tracker.all.count}}</td>
+                <td>{{object.date}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -141,7 +141,7 @@ AUTHENTICATION_BACKENDS  = [
 ]
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
 
@@ -158,3 +158,21 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': '100%',
     'height': '550px'
 }
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '400665822264-p4f1d5m44odgmp9kooc3eees2rkf8ro0.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '1eg0tv0pzqNGpK_Du_KYZY1T'
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline',
+    'approval_prompt': 'auto'
+}
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+PAYU_MERCHANT_KEY = os.getenv('PAYU_MERCHANT_KEY')
+PAYU_SALT = os.getenv('PAYU_SALT')
+PAYU_BASE_URL = "https://secure.payu.in/_payment"

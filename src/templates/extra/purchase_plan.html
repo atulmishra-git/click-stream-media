@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+  <h3 class="mb-5">Puchase Plan</h3>
+  {% if messages %}
+        {% for message in messages %}
+        <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+  {% endif %}
+
+  <div class="row">
+    <div class="col-6 mx-auto border p-4">
+      <p class="text text-secondary">
+        <strong>{{object}} ${{object.cost}}.00</strong>
+      </p>
+      <ul class="list-unstyled mt-3 mb-3">
+        {% autoescape off %}
+          {{ object.description }}
+        {% endautoescape %}
+      </ul>
+      <form method="post" action="{{action}}">
+        <input type="hidden" name="amount" value="{{object.cost}}.00">
+
+        <input type="hidden" name="key" value="{{ PAYU_MERCHANT_KEY }}" />
+
+        <input type="hidden" name="hash_string" value="{{ hash_string }}" />
+
+        <input type="hidden" name="hash" value="{{ hash }}"/>
+        <input type="hidden" name="txnid" value="{{ txnid }}" />
+        <input type="hidden" name="service_provider" value="payu_paisa" />
+        <input type="hidden" name="surl" value="{{ surl }}"  />
+        <input type="hidden" name="furl" value="{{ furl }}"  />
+
+        <div class="form-group">
+          <!-- <label for="firstname">
+            First Name
+            <span class="required">*</span>
+          </label> -->
+          <input type="hidden" name="firstname" id="firstname" class="form-control" placeholder="First Name" required value="{{request.user}}">
+        </div>
+        <div class="form-group">
+          <!-- <label for="email">
+            Email
+            <span class="required">*</span>
+          </label> -->
+          <input type="hidden" name="email" id="email" class="form-control" placeholder="Email" required value="{{request.user.email}}">
+        </div>
+        <div class="form-group">
+          <label for="phone">
+            Phone
+            <span class="required">*</span>
+          </label>
+          <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone" required>
+        </div>
+        <div class="form-group">
+          <input type="hidden" name="productinfo" id="productinfo" class="form-control" value="{{object}}">
+        </div>
+        <button type="submit" class="btn btn-primary">Buy now</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .required{
+      color:red;
+    }
+  </style>
+{% endblock %}

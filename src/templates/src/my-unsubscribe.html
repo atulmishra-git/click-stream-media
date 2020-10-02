@@ -29,6 +29,9 @@
         </div>
         {{form.campaign}}
         <button type="submit" name="button" class="btn btn-danger">Submit</button>
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'my_unsubscribe_list' %}" class="btn btn-secondary">Cancel</a>
+        {% endif %}
       </form>
     </div>
   </body>

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
   <h1 class="display-4">Pricing</h1>
-  <p class="lead">.</p>
+  <h4>Plans that work for your company</h4>
 </div>
 
 <div class="container">
@@ -15,15 +15,20 @@
     <h4 class="my-0 font-weight-normal">{{obj.name}}</h4>
   </div>
   <div class="card-body">
-    <h1 class="card-title pricing-card-title">${{obj.cost}} <small class="text-muted">/ year</small></h1>
+    <h1 class="card-title pricing-card-title">${{obj.cost}} <small class="text-muted">/ mo</small></h1>
+    <ul class="list-unstyled mt-3 mb-2">
+    {% autoescape off %}
     {{ obj.description }}
-    <!-- <ul class="list-unstyled mt-3 mb-4">
-      <li>10 users included</li>
-      <li>2 GB of storage</li>
-      <li>Email support</li>
-      <li>Help center access</li>
-    </ul> -->
-    <a href="" class="btn btn-lg btn-block btn-outline-primary">Purchase</a>
+    {% endautoescape %}
+    {% if obj.name == "Basic" or obj.name == "Advanced" %}
+      <li>&nbsp;</li>
+    {% endif %}
+   </ul>
+   {% if obj.name == "Basic" %}
+      <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-lg btn-block btn-outline-primary mt-4">Sign up for free</a>
+   {% else %}
+      <a href="{% url 'purchase_plan' obj.id %}" class="btn btn-lg btn-block btn-outline-primary mt-4">Purchase</a>
+   {% endif %}
   </div>
 </div>
 {% endfor %}

@@ -162,8 +162,3 @@ class UserCreateView(View):
         except Exception as e:
             message = 'Failed'
         return JsonResponse({'results': message})
-
-
-class PurchasePlan(View):
-    def get(self, request, *args, **kwargs):
-        return

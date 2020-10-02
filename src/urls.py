@@ -1,7 +1,8 @@
 from django.urls import path
 from .views.src import EmailTackerOpen, UnsubscribeView, CampaignView, MyUnsubscribeView, UserPlansView, QuotaConsumedView, UserCreateView
 
-from .views.extra import IndexView, LoginView, PlansView, PrivacyView, TermsOfUseView, AboutView
+from .views.extra import IndexView, PlansView, PrivacyView, TermsOfUseView, AboutView, UserCampaignView, \
+MyUnsubscribeListView, MyUnsubscribeDeleteView, ContactView, PurchasePlanView, PaymentSuccessView, PaymentFailureView
 
 
 urlpatterns = [
@@ -17,9 +18,15 @@ urlpatterns = [
 
 urlpatterns += [
     path('', IndexView.as_view(), name='index'),
-    path('login/', LoginView.as_view(), name='login'),
     path('plans/', PlansView.as_view(), name='plans'),
     path('privacy/', PrivacyView.as_view(), name='privacy'),
     path('terms/', TermsOfUseView.as_view(), name='terms'),
-    path('about/', AboutView.as_view(), name='about')
+    path('about/', AboutView.as_view(), name='about'),
+    path('campaigns/',UserCampaignView.as_view(), name='user_campaign'),
+    path('unsubscriptions/',MyUnsubscribeListView.as_view(), name='my_unsubscribe_list'),
+    path('unsubscriptions/<int:pk>/delete', MyUnsubscribeDeleteView.as_view(), name='my_unsubscribe_delete'),
+    path('contact/', ContactView.as_view(), name='contact'),
+    path('purchase_plan/<int:pk>/plan', PurchasePlanView.as_view(), name='purchase_plan'),
+    path('payment_success/', PaymentSuccessView.as_view(), name='payment_success'),
+    path('payment_failure/', PaymentFailureView.as_view(), name='payment_failure')
 ]

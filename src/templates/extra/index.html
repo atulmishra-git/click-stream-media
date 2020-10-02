@@ -3,19 +3,19 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<div class="bg-red container-banner">
   <div class="row">
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-      <h1 class="display-4"><img src="{% static 'images/mmm_Final.png' %}" /></h1>
-      <p class="lead">The Easiest Way to Create Email Campaigns</p>
+      <h1 class="display-4"> <img src="{% static '/images/MyMailMerge-Icon.png' %}" height="100"></h1>
+      <h2 class="mb-2">The Easiest Way to Create Email Campaigns</h2>
       <p>Mail merges don't have to be complicated. Send your own personalized, trackable email campaigns from your Gmail account.</p>
-      <a class="btn btn-lg btn-danger m-5">Try MMM for free</a>
+      <a class="btn btn-lg m-5 btn-danger">Try MMM for free</a>
     </div>
   </div>
 </div>
 
 <div class="container">
-  <div class="row mb-5">
+  <div class="row m-5">
     <div class="col-10 mx-auto text-center">
       <h2>Our users send over 1.5 million emails every day</h2>
       <p>Create and track your very own personalized email campaign in three simple steps. No coding required.</p>
@@ -27,4 +27,41 @@
     </div>
   </div>
 </div>
+
+<div class="container">
+  <div class="row">
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+      <h1 class="display-4">Pricing</h1>
+      <h4>Plans that work for your company</h4>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="card-deck mb-3 text-center">
+   {% for plan in plans %}
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">{{plan.name}}</h4>
+      </div>
+      <div class="card-body">
+        <h1 class="card-title pricing-card-title">${{plan.cost}} <small class="text-muted">/ mo</small></h1>
+        <ul class="list-unstyled mt-3 mb-4">
+          {% autoescape off %}
+          {{ plan.description }}
+          {% endautoescape %}
+          {% if plan.name == "Basic" or plan.name == "Advanced" %}
+            <li>&nbsp;</li>
+          {% endif %}
+        </ul>
+        {% if plan.name == "Basic" %}
+           <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</a>
+        {% else %}
+           <a href="{% url 'purchase_plan' plan.id %}" class="btn btn-lg btn-block btn-outline-primary mt-4">Purchase</a>
+        {% endif %}
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 {% endblock %}
