@@ -83,6 +83,9 @@ class UnsubscribeEmail(models.Model):
     def __str__(self):
         return self.email
 
+    class Meta:
+        verbose_name_plural = ('Unsubscribe Email')
+
 
 class Plans(models.Model):
     PLAN_TYPE = (
@@ -104,20 +107,26 @@ class Plans(models.Model):
 
 class PurchasedPlans(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_plan')
-    plan = models.ForeignKey(Plans, on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plans, on_delete=models.CASCADE, related_name='purchased_plan')
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.plan.name
 
     class Meta:
-        verbose_name_plural = ('Purchased Plans')
+        verbose_name_plural = ('Purchased Plan')
 
 
 class QuotaConsumed(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userquota_consumed')
     amount = models.IntegerField(default=0)
     date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.user
+
+    class Meta:
+        verbose_name_plural = 'Quota Consumed'
 
 
 class CmsPage(models.Model):

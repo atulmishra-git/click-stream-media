@@ -13,6 +13,7 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib import messages
 from datetime import datetime
+import datetime as dt
 
 # Create your views here.
 
@@ -110,11 +111,17 @@ class UserPlansView(View):
         user = User.objects.get(email=self.kwargs['user'])
         try:
             pp = PurchasedPlans.objects.get(user=user)
-            results = dict(name=pp.plan.name, quota=pp.plan.quota, id=pp.plan.pk)
+            valid_till = pp.date + dt.timedelta(days=30)
+            expired = True if valid_till == datetime.today().strftime("%Y-%m-%d") else False
+            results = dict(name=pp.plan.name, quota=pp.plan.quota, id=pp.plan.pk, date=pp.date, valid_till=valid_till, expired=expired)
             return JsonResponse({'results': results})
         except PurchasedPlans.DoesNotExist:
             plan = Plans.objects.get(type='Free')
-            results = dict(name=plan.name, quota=plan.quota, id=plan.pk)
+            pp = PurchasedPlans.objects.create(user=user, plan=plan)
+            pp.save()
+            valid_till = pp.date + dt.timedelta(days=30)
+            expired = True if valid_till == datetime.today().strftime("%Y-%m-%d") else False
+            results = dict(name=plan.name, quota=plan.quota, id=plan.pk, date=pp.date, valid_till=valid_till, expired=expired)
             return JsonResponse({'results': results})
 
 
