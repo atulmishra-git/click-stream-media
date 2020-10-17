@@ -2,7 +2,8 @@ from django.urls import path
 from .views.src import EmailTackerOpen, UnsubscribeView, CampaignView, MyUnsubscribeView, UserPlansView, QuotaConsumedView, UserCreateView
 
 from .views.extra import IndexView, PlansView, PrivacyView, TermsOfUseView, AboutView, UserCampaignView, \
-MyUnsubscribeListView, MyUnsubscribeDeleteView, ContactView, PurchasePlanView, PaymentSuccessView, PaymentFailureView
+MyUnsubscribeListView, MyUnsubscribeDeleteView, ContactView, PurchasePlanView, PaymentSuccessView, PaymentFailureView, LoginView, \
+LogoutView
 
 
 urlpatterns = [
@@ -28,5 +29,7 @@ urlpatterns += [
     path('contact/', ContactView.as_view(), name='contact'),
     path('purchase_plan/<int:pk>/plan', PurchasePlanView.as_view(), name='purchase_plan'),
     path('payment_success/', PaymentSuccessView.as_view(), name='payment_success'),
-    path('payment_failure/', PaymentFailureView.as_view(), name='payment_failure')
+    path('payment_failure/', PaymentFailureView.as_view(), name='payment_failure'),
+    path('login', LoginView.as_view(), name='login'),
+    path('logout', LogoutView.as_view(), name='logout')
 ]

@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView, View, DeleteView, DetailView
+from django.views.generic import TemplateView, ListView, View, DeleteView, DetailView, RedirectView
 from src.models import Plans, CmsPage, Campaign, UnsubscribeEmail, PurchasedPlans
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -113,7 +113,7 @@ class PurchasePlanView(LoginRequiredMixin, DetailView):
         hash_string = ''
         hashVarsSeq = hashSequence.split('|')
         posted= {
-            'key': settings.PAYU_MERCHANT_KEY,
+            'key': settings.PAYU_MERCHANT_KEY.strip(),
             'txnid': self.get_transaction_id(),
             'amount': f"{float(self.object.cost):.2f}",
             'productinfo': self.object,
@@ -127,7 +127,7 @@ class PurchasePlanView(LoginRequiredMixin, DetailView):
             except Exception:
                 hash_string += ''
             hash_string += '|'
-        hash_string += settings.PAYU_SALT
+        hash_string += settings.PAYU_SALT.strip()
         return hash_string
 
     def generate_hash(self):
@@ -145,7 +145,7 @@ class PurchasePlanView(LoginRequiredMixin, DetailView):
         data['hash'] = hash
         data['hash_string'] = hash_string
         data['txnid'] = self.get_transaction_id()
-        data['PAYU_MERCHANT_KEY'] = settings.PAYU_MERCHANT_KEY
+        data['PAYU_MERCHANT_KEY'] = settings.PAYU_MERCHANT_KEY.strip()
         data['action'] = action
         data['furl'] = self.request.build_absolute_uri(reverse_lazy('payment_success'))
         data['surl'] = self.request.build_absolute_uri(reverse_lazy('payment_failure'))
@@ -171,3 +171,11 @@ class PaymentFailureView(TemplateView):
 
     def post(self, *args, **kwargs):
         return render(self.request, self.template_name)
+
+
+class LoginView(RedirectView):
+    url = reverse_lazy('social:begin', kwargs={'backend': 'google-oauth2'})
+
+
+class LogoutView(RedirectView):
+    pass
